@@ -80,19 +80,4 @@ public class TokenAuthFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
-    /**
-     * Filter 内部发生的异常，手动构建 JSON 响应给前端
-     */
-    private void handleException(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding("UTF-8");
-
-        // 使用通用返回类封装错误信息
-        Result<Object> result = Result.failed(ResultCode.UNAUTHORIZED, message);
-
-        // 使用 Hutool 将对象转为 JSON 字符串
-        response.getWriter().write(JSONUtil.toJsonStr(result));
-    }
 }

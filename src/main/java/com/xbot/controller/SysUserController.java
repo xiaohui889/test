@@ -9,14 +9,12 @@ import com.xbot.service.SysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 public class SysUserController {
     
     private final SysUserService sysUserService;
@@ -30,7 +28,7 @@ public class SysUserController {
         // 1. 校验验证码 (建议在 DTO 中接收 uuid)
         // captchaService.validate(loginDTO.getUuid(), loginDTO.getCaptchaCode());
         String token = sysUserService.login(loginDTO.getUsername(), loginDTO.getPassword());
-        return Result.success(token);
+        return Result.success(token,"登陆成功");
     }
 
 
