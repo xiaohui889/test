@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 
 @Data
@@ -18,6 +19,7 @@ import org.hibernate.annotations.SQLDelete;
 @EqualsAndHashCode(callSuper = true) // 包含父类的字段比较
 // 1. 逻辑删除核心配置：调用 repository.delete() 时，执行的是 UPDATE
 @SQLDelete(sql = "UPDATE sys_user SET deleted = 1 WHERE id = ?")
+@SQLRestriction("deleted = 0") // 替代已弃用的 @Where("deleted = 0")
 @Schema(description = "后台用户实体")
 public class SysUser extends BaseEntity {
 

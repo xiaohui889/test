@@ -35,13 +35,13 @@ import java.util.Map;
 public class TokenAuthFilter extends OncePerRequestFilter {
 
     private final JwtProperties jwtProperties;
+    private final JwtUtils jwtUtils; // 注入单例
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        JwtUtils jwtUtils = new JwtUtils(jwtProperties);
         // 1. 获取请求路径
         String path = request.getServletPath();
         log.debug("Processing request for path: {}", path);
