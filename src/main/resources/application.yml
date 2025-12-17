@@ -3,7 +3,6 @@ spring:
     name: xbot
   profiles:
     active: dev
-
 jwt:
   # 你的密钥（生产环境建议长度更长，且通过环境变量覆盖）
   secret-key: "faguiewoirgsdjjksdfdfg8845124648"

@@ -5,6 +5,7 @@ import com.xbot.dto.LoginDTO;
 import com.xbot.entity.SysUser;
 import com.xbot.repository.UserRepository;
 import com.xbot.security.JwtUtils;
+import com.xbot.service.SysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -17,36 +18,18 @@ import java.util.Map;
 
 @RestController("/auth")
 public class SysUserController {
+    
+    private final SysUserService sysUserService;
 
-    @Resource
-    private UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // 注入密码加密器
-    private final JwtUtils jwtUtils;
-
-    public SysUserController(PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
+    public SysUserController(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
     }
-
-    @PostMapping("/login")
+    
+    @PostMapping("login")
     public Result<String> login(@Validated @RequestBody LoginDTO loginDTO) {
         // 1. 校验验证码 (建议在 DTO 中接收 uuid)
         // captchaService.validate(loginDTO.getUuid(), loginDTO.getCaptchaCode());
-
-        // 2. 查找用户
-        SysUser user = userRepository.findByUsername(loginDTO.getUsername())
-                .orElseThrow(() -> new RuntimeException("账号不存在"));
-
-        // 3. 校验密码 (使用加密比对)
-        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            return Result.failed("账号或密码错误");
-        }
-        // 4. 生成真正的 JWT Token
-        // 根据实体中的 role 定义 (0:ADMIN, 1:USER) 转换为 Spring Security 识别的角色名
-        String roleName = user.getRole() == 0 ? "ROLE_ADMIN" : "ROLE_USER";
-
-        String token = jwtUtils.createToken(user.getUsername(), roleName);
-
+        String token = sysUserService.login(loginDTO.getUsername(), loginDTO.getPassword());
         return Result.success(token);
     }
 
