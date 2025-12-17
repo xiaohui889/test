@@ -3,17 +3,17 @@ package com.xbot.security;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.signers.JWTSignerUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Component // 标记为组件
+@RequiredArgsConstructor
 public class JwtUtils {
 
-    private final JwtProperties jwtProperties;
-
-    public JwtUtils(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-    }
+    JwtProperties jwtProperties = new JwtProperties();
 
     public String createToken(String username, String role) {
         byte[] key = jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8);
