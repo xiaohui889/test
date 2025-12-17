@@ -13,7 +13,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    JwtProperties jwtProperties = new JwtProperties();
+    private final JwtProperties jwtProperties;
 
     public String createToken(String username, String role) {
         byte[] key = jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8);

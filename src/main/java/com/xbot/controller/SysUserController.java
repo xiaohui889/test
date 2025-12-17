@@ -21,9 +21,11 @@ public class SysUserController {
     @Resource
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // 注入密码加密器
+    private final JwtUtils jwtUtils;
 
-    public SysUserController(PasswordEncoder passwordEncoder) {
+    public SysUserController(PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/login")
@@ -43,7 +45,6 @@ public class SysUserController {
         // 根据实体中的 role 定义 (0:ADMIN, 1:USER) 转换为 Spring Security 识别的角色名
         String roleName = user.getRole() == 0 ? "ROLE_ADMIN" : "ROLE_USER";
 
-        JwtUtils jwtUtils = new JwtUtils();
         String token = jwtUtils.createToken(user.getUsername(), roleName);
 
         return Result.success(token);
