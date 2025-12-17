@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: xbot
+  profiles:
+    active: dev
+
+jwt:
+  # 你的密钥（生产环境建议长度更长，且通过环境变量覆盖）
+  secret-key: "faguiewoirgsdjjksdfdfg8845124648"
+  # Token 过期时间，单位：毫秒 (这里设置为 24 小时)
+  expiration: 86400000
+  # Header 名称
+  header: "Authorization"
+  # 前缀
+  prefix: "Bearer "

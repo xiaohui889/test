@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xbot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+    username: root
+    password: 111111
+
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 10
+      # 2. 超时时间 (毫秒)
+      # 关键参数：连接在池中的最大生命周期。必须小于数据库自身的 wait_timeout (MySQL默认为8小时)
+      # 推荐设置 30分钟(1800000) 或 1小时，防止数据库侧单方面断开连接
+      max-lifetime: 1800000
+      # 等待连接池分配连接的最大时长。超过这个时间拿不到连接会抛异常 (SQLTransientConnectionException)
+      # 默认 30000 (30秒)，如果你的接口响应很快，可以调小到 5-10秒，快速失败
+      connection-timeout: 30000
+      # 连接允许在池中闲置的最长时间。只有当 minimum-idle < maximum-pool-size 时才生效
+      # 默认 600000 (10分钟)
+      idle-timeout: 600000
+      # 3. 健康检查
+      # 用于检测连接是否还活着的查询语句 (JDBC4 驱动通常不需要配置此项，Hikari会自动使用 ping)
+      # connection-test-query: SELECT 1
+      # 4. 线程名称前缀 (方便看日志排查问题)
+      pool-name: MallHikariCP
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
